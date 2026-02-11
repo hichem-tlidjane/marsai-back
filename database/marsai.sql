@@ -118,7 +118,8 @@ CREATE TABLE IF NOT EXISTS `newsletter` (
     `object` VARCHAR(100),
     `content` TEXT,
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    `send_at` DATETIME
+    `send_at` DATETIME,
+    `sent` BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE IF NOT EXISTS `subscriber` (
