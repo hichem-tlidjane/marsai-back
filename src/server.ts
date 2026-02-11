@@ -30,8 +30,6 @@ app.use(errorHandler);
 
 emailService.mailerJob();
 
-// await newsletterModel.findAllToSend();
-
 app.listen(PORT, () => {
   console.info(`Server is running on ${IP}:${PORT}`);
 });
