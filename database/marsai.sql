@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS `movie` (
     `path` VARCHAR(255),
     `cover_image` VARCHAR(255) NOT NULL,
     `duration` INT NOT NULL,
-    `isHybrid` BOOLEAN NOT NULL,
+    `is_hybrid` BOOLEAN NOT NULL,
     `language` ENUM('FR','EN') NOT NULL,
     `original_synopsis` TEXT NOT NULL,
     `english_synopsis` TEXT NOT NULL,
