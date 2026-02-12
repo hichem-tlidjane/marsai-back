@@ -1,6 +1,7 @@
 import eventModel from '../models/event.model.js';
 import type { CreateEventRequest } from '../types/schemas/create-event-request.schema.js';
 import type { Event } from '../types/interfaces/event.interface.js';
+import AppError from '../helpers/AppError.js';
 
 const create = async (body: CreateEventRequest): Promise<void> => {
   await eventModel.create(body);
@@ -13,7 +14,7 @@ const findAll = async (): Promise<Event[]> => {
 const remove = async (id: number): Promise<void> => {
   const affectedRows = await eventModel.remove(id);
   if (affectedRows === 0) {
-    throw new Error(`Event with id ${id} not found`);
+    throw new AppError(404, 'Event not found');
   }
 };
 

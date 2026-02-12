@@ -25,9 +25,6 @@ const remove: RequestHandler = async (req, res, next) => {
     await eventService.remove(parseInt(id as string));
     return res.status(204).send();
   } catch (err) {
-    if (err instanceof Error) {
-      return res.status(404).json({ message: err.message });
-    }
     next(err);
   }
 };
