@@ -32,6 +32,19 @@ const remove: RequestHandler = async (req, res, next) => {
   }
 };
 
-const eventController = { create, findAll, remove };
+const update: RequestHandler = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    await eventService.update(parseInt(id as string), req.body);
+    return res.status(200).send();
+  } catch (err) {
+    if (err instanceof Error) {
+      return res.status(404).json({ message: err.message });
+    }
+    next(err);
+  }
+};
+
+const eventController = { create, findAll, remove, update };
 
 export default eventController;

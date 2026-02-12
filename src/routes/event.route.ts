@@ -4,6 +4,7 @@ import eventController from '../controllers/event.controller.js';
 import { isLogged } from '../middlewares/is-logged.js';
 import { isAdmin } from '../middlewares/is-admin.js';
 import { CreateEventRequestSchema } from '../types/schemas/create-event-request.schema.js';
+import { UpdateEventRequestSchema } from '../types/schemas/update-event-request.schema.js';
 
 const eventRouter = express.Router();
 
@@ -16,6 +17,14 @@ eventRouter.post(
 );
 
 eventRouter.get('/', eventController.findAll);
+
+eventRouter.put(
+  '/:id',
+  validate(UpdateEventRequestSchema),
+  isLogged,
+  isAdmin,
+  eventController.update,
+);
 
 eventRouter.delete('/:id', isLogged, isAdmin, eventController.remove);
 

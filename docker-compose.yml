@@ -2,7 +2,7 @@ services:
   marsai-db:
     image: mysql:8.4.8
     ports:
-      - "${MYSQL_PORT}:3306"
+      - '${MYSQL_PORT}:3306'
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -16,7 +16,7 @@ services:
     image: phpmyadmin
     restart: always
     ports:
-      - "8080:80"
+      - '${PHPMYADMIN_PORT:-8080}:80'
     environment:
       PMA_HOST: marsai-db
     depends_on:
