@@ -13,8 +13,8 @@ CREATE TABLE IF NOT EXISTS `movie` (
     `english_title` VARCHAR(255) NOT NULL,
     `submitted_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `youtube_url` VARCHAR(255) UNIQUE,
-    `path` VARCHAR(255),
-    `cover_image` VARCHAR(255) NOT NULL,
+    `video_path` VARCHAR(255),
+    `cover_path` VARCHAR(255) NOT NULL,
     `duration` INT NOT NULL,
     `is_hybrid` BOOLEAN NOT NULL,
     `language` ENUM('FR','EN') NOT NULL,
@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS `movie_tag`(
 
 CREATE TABLE IF NOT EXISTS `image` (
     `id` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    `url` VARCHAR(255) NOT NULL,
+    `path` VARCHAR(255) NOT NULL,
     `movie_id` INT NOT NULL,
     FOREIGN KEY (`movie_id`) REFERENCES `movie`(`id`) ON DELETE CASCADE
 );

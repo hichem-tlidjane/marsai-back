@@ -73,24 +73,46 @@ const CollaboratorsSchema = z.object({
 
 export type Collaborator = z.infer<typeof CollaboratorsSchema>;
 
-export const MovieRequestSchema = z.object({
-  originalTitle: z.string().min(1).max(255),
-  englishTitle: z.string().min(1).max(255),
-  video: z.array(VideoFileSchema).nonempty(),
-  coverImage: z.array(ImageFileSchema).nonempty(),
-  stillImageA: z.array(ImageFileSchema).nullish(),
-  stillImageB: z.array(ImageFileSchema).nullish(),
-  stillImageC: z.array(ImageFileSchema).nullish(),
-  duration: z.coerce.number().int().positive().max(90),
-  isHybrid: z.coerce.boolean().default(false),
-  language: z.enum(['FR', 'EN']),
-  originalSynopsis: z.string().min(1).max(300),
-  englishSynopsis: z.string().min(1).max(300),
-  creativeProcess: z.string().min(1).max(300),
-  aiTools: z.string().min(1).max(300),
-  hasSubs: z.coerce.boolean(),
-  director: z.preprocess(parseJson, DirectorSchema),
-  collaborators: z.preprocess(parseJson, z.array(CollaboratorsSchema)),
-});
+export const MovieRequestSchema = z
+  .object({
+    originalTitle: z.string().min(1).max(255),
+    englishTitle: z.string().min(1).max(255),
+    video: z.array(VideoFileSchema).nonempty(),
+    coverImage: z.array(ImageFileSchema).nonempty(),
+    stillImageA: z.array(ImageFileSchema).nullish(),
+    stillImageB: z.array(ImageFileSchema).nullish(),
+    stillImageC: z.array(ImageFileSchema).nullish(),
+    duration: z.coerce.number().int().positive().max(90),
+    isHybrid: z.coerce.boolean().default(false),
+    language: z.enum(['FR', 'EN']),
+    originalSynopsis: z.string().min(1).max(300),
+    englishSynopsis: z.string().min(1).max(300),
+    creativeProcess: z.string().min(1).max(300),
+    aiTools: z.string().min(1).max(300),
+    hasSubs: z.coerce.boolean(),
+    director: z.preprocess(parseJson, DirectorSchema),
+    collaborators: z.preprocess(parseJson, z.array(CollaboratorsSchema)),
+  })
+  .transform((data) => {
+    const {
+      coverImage,
+      video,
+      stillImageA,
+      stillImageB,
+      stillImageC,
+      ...rest
+    } = data;
+
+    const stillsPath = [stillImageA, stillImageB, stillImageC]
+      .map((fileArray) => fileArray?.[0]?.path)
+      .filter((path): path is string => !!path);
+
+    return {
+      ...rest,
+      videoPath: video[0]!.path,
+      coverPath: coverImage[0]!.path,
+      stillsPath,
+    };
+  });
 
 export type MovieRequest = z.infer<typeof MovieRequestSchema>;

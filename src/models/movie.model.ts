@@ -6,9 +6,9 @@ import type Movie from '../types/interfaces/Movie.interface.js';
 const create = async (newMovie: MovieRequest): Promise<number> => {
   const sql = `
     INSERT INTO movie 
-    (original_title, english_title, cover_image, duration, is_hybrid, language, original_synopsis, english_synopsis, creative_process, ai_tools, has_subs) 
+    (original_title, english_title, cover_path, duration, is_hybrid, language, original_synopsis, english_synopsis, creative_process, ai_tools, has_subs, video_path) 
     VALUES 
-    (:originalTitle, :englishTitle, :coverImage, :duration, :isHybrid, :language, :originalSynopsis, :englishSynopsis, :creativeProcess, :aiTools, :hasSubs)
+    (:originalTitle, :englishTitle, :coverPath, :duration, :isHybrid, :language, :originalSynopsis, :englishSynopsis, :creativeProcess, :aiTools, :hasSubs, :videoPath)
   `;
 
   const [result] = await db.execute<ResultSetHeader>(sql, newMovie);

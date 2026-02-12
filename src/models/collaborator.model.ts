@@ -66,6 +66,8 @@ const create = async (
   data: Collaborator[],
   movieId: number,
 ): Promise<number> => {
+  if (!data.length) return 0;
+
   const values = data.map((c) => [
     c.gender,
     c.firstname,
