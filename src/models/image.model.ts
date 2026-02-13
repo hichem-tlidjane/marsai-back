@@ -1,7 +1,10 @@
 import type { ResultSetHeader } from 'mysql2';
 import db from '../database/connection.js';
 
-const insertMultiple = async (paths: string[], movieId: number) => {
+const insertMultiple = async (
+  paths: string[],
+  movieId: number,
+): Promise<void> => {
   if (!paths.length) return;
 
   const values = paths.map((path) => [path, movieId]);
