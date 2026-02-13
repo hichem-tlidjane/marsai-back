@@ -4,16 +4,18 @@ import type { MovieRequest } from '../types/schemas/MovieRequest.schema.js';
 import type Movie from '../types/interfaces/Movie.interface.js';
 import db from '../database/connection.js';
 import collaboratorModel from '../models/collaborator.model.js';
+import imageModel from '../models/image.model.js';
 
 const create = async (movieRequest: MovieRequest): Promise<MovieResponse> => {
   try {
     await db.beginTransaction();
-    const newMovieId = await movieModel.create(movieRequest);
-    await collaboratorModel.createDirector(movieRequest.director, newMovieId);
-    await collaboratorModel.create(movieRequest.collaborators, newMovieId);
+    const movieId = await movieModel.create(movieRequest);
+    await collaboratorModel.createDirector(movieRequest.director, movieId);
+    await collaboratorModel.create(movieRequest.collaborators, movieId);
+    await imageModel.insertMultiple(movieRequest.stillsPath, movieId);
     await db.commit();
     const response: MovieResponse = {
-      movieId: newMovieId,
+      movieId: movieId,
     };
     return response;
   } catch (err) {
