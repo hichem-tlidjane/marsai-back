@@ -5,7 +5,7 @@ import { removeUploads } from '../helpers/remove-uploads.js';
 const create: RequestHandler = async (req, res, next) => {
   try {
     const response = await movieService.create(req.body);
-    return res.send(response);
+    return res.status(201).send(response);
   } catch (e) {
     removeUploads(req);
     next(e);

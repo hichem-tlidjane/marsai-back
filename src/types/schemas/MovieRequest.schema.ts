@@ -5,6 +5,7 @@ import {
   MAX_IMAGE_SIZE,
   MAX_VIDEO_SIZE,
 } from '../../helpers/upload-const.js';
+import { getVideoDurationInSeconds } from 'get-video-duration';
 
 const parseJson = (value: unknown, ctx: z.RefinementCtx) => {
   if (typeof value === 'string') {
@@ -82,7 +83,7 @@ export const MovieRequestSchema = z
     stillImageA: z.array(ImageFileSchema).nullish(),
     stillImageB: z.array(ImageFileSchema).nullish(),
     stillImageC: z.array(ImageFileSchema).nullish(),
-    duration: z.coerce.number().int().positive().max(90),
+    // duration: z.coerce.number().int().positive().max(90),
     isHybrid: z.coerce.boolean().default(false),
     language: z.enum(['FR', 'EN']),
     originalSynopsis: z.string().min(1).max(300),
@@ -93,7 +94,7 @@ export const MovieRequestSchema = z
     director: z.preprocess(parseJson, DirectorSchema),
     collaborators: z.preprocess(parseJson, z.array(CollaboratorsSchema)),
   })
-  .transform((data) => {
+  .transform(async (data, ctx) => {
     const {
       coverImage,
       video,
@@ -103,6 +104,17 @@ export const MovieRequestSchema = z
       ...rest
     } = data;
 
+    const duration = await getVideoDurationInSeconds(video[0]!.path);
+
+    if (duration > 90) {
+      ctx.addIssue({
+        code: 'custom',
+        message: 'Video cannot be longer than 90 seconds.',
+        path: ['video'],
+      });
+      return z.NEVER;
+    }
+
     const stillsPath = [stillImageA, stillImageB, stillImageC]
       .map((fileArray) => fileArray?.[0]?.path)
       .filter((path): path is string => !!path);
@@ -110,6 +122,7 @@ export const MovieRequestSchema = z
     return {
       ...rest,
       videoPath: video[0]!.path,
+      duration,
       coverPath: coverImage[0]!.path,
       stillsPath,
     };
