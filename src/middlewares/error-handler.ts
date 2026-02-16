@@ -12,7 +12,7 @@ export const errorHandler: ErrorRequestHandler = (
   let message = 'Internal server error';
 
   if (err instanceof AppError) {
-    statusCode = err.statusCode; // distinct from err.code
+    statusCode = err.statusCode;
     message = err.message;
   }
 
