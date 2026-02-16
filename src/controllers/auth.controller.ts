@@ -1,5 +1,9 @@
-import type { RequestHandler } from 'express';
+import type { Request, RequestHandler } from 'express';
 import authService from '../services/auth.service.js';
+import jwtService from '../services/jwt.service.js';
+import jwt from 'jsonwebtoken';
+import { setTokensInCookies } from '../helpers/cookies.js';
+import AppError from '../helpers/AppError.js';
 
 const login: RequestHandler = async (req, res, next) => {
   try {
@@ -7,12 +11,33 @@ const login: RequestHandler = async (req, res, next) => {
     if (!response)
       return res.status(401).send({ message: 'Invalid credentials' });
 
-    return res.send(response);
+    setTokensInCookies(res, response.accessToken, response.refreshToken);
+
+    return res.send(response.user);
   } catch (e) {
     next(e);
   }
 };
 
-const authController = { login };
+const refreshToken: RequestHandler = (req: Request, res, next) => {
+  try {
+    const refreshTokenCookie = req.cookies.refreshToken as string | undefined;
+
+    if (!refreshTokenCookie) throw new AppError(400, 'Empty refresh token');
+
+    const payload = jwtService.verify(refreshTokenCookie);
+    const tokens = jwtService.signPair(payload);
+    setTokensInCookies(res, tokens.accessToken, tokens.refreshToken);
+
+    return res.send(tokens);
+  } catch (e) {
+    if (e instanceof jwt.TokenExpiredError) {
+      return res.status(400).send({ message: 'Refresh token expired' });
+    }
+    next(e);
+  }
+};
+
+const authController = { login, refreshToken };
 
 export default authController;

@@ -6,5 +6,6 @@ import { AuthRequestSchema } from '../types/schemas/auth-request.schema.js';
 const authRouter = express.Router();
 
 authRouter.post('/login', validate(AuthRequestSchema), authController.login);
+authRouter.post('/refresh-token', authController.refreshToken);
 
 export default authRouter;

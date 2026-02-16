@@ -7,16 +7,19 @@ import eventRouter from './routes/event.route.js';
 import newsletterRouter from './routes/newsletter.routes.js';
 import emailService from './services/emailService.js';
 import subscriberRouter from './routes/subscriber.route.js';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 const IP = process.env.IP;
 const PORT = process.env.PORT;
 
+app.use(cookieParser());
 app.use(express.json());
 
 app.use(
   cors({
     origin: process.env.FRONT_IP,
+    credentials: true,
   }),
 );
 
