@@ -16,9 +16,6 @@ const create = async (
 
   const bookingId = await bookingModel.create(eventId, participantId);
 
-  if (!bookingId) {
-    throw new AppError(500, 'Failed to create booking');
-  }
   return bookingId;
 };
 

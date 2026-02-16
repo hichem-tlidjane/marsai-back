@@ -1,5 +1,4 @@
 import participantModel from '../models/participant.model.js';
-import AppError from '../helpers/AppError.js';
 import type Participant from '../types/interfaces/participant.interface.js';
 
 const findOrCreate = async (
@@ -22,11 +21,6 @@ const findOrCreate = async (
       email,
     } as Participant;
   }
-
-  if (!participant) {
-    throw new AppError(500, 'Failed to create or find participant');
-  }
-
   return participant;
 };
 
