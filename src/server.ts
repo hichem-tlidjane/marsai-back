@@ -22,9 +22,9 @@ app.use(
 
 app.use('/auth', authRouter);
 app.use('/movies', movieRouter);
-app.use('/event', eventRouter);
-app.use('/newsletter', newsletterRouter);
-app.use('/subscriber', subscriberRouter);
+app.use('/events', eventRouter);
+app.use('/newsletters', newsletterRouter);
+app.use('/subscribers', subscriberRouter);
 
 app.use(errorHandler);
 
