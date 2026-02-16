@@ -8,6 +8,7 @@ import newsletterRouter from './routes/newsletter.routes.js';
 import emailService from './services/emailService.js';
 import subscriberRouter from './routes/subscriber.route.js';
 import cookieParser from 'cookie-parser';
+import bookingRouter from './routes/booking.routes.js';
 
 const app = express();
 const IP = process.env.IP;
@@ -25,9 +26,10 @@ app.use(
 
 app.use('/auth', authRouter);
 app.use('/movies', movieRouter);
-app.use('/events', eventRouter);
-app.use('/newsletters', newsletterRouter);
-app.use('/subscribers', subscriberRouter);
+app.use('/event', eventRouter);
+app.use('/newsletter', newsletterRouter);
+app.use('/subscriber', subscriberRouter);
+app.use('/bookings', bookingRouter);
 
 app.use(errorHandler);
 
