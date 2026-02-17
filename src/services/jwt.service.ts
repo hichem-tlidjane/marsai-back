@@ -10,7 +10,11 @@ const signAccessToken = (payload: TokenPayload): string => {
     },
   );
 };
-
+const signSubscribeEventToken = (payload: { id: number }): string => {
+  return jwt.sign({ id: payload.id }, process.env.JWT_SECRET, {
+    expiresIn: '7d',
+  });
+};
 const signRefreshToken = (payload: TokenPayload): string => {
   return jwt.sign(
     { id: payload.id, roles: payload.roles },
@@ -34,6 +38,12 @@ const signPair = (
   };
 };
 
-const jwtService = { signAccessToken, signRefreshToken, verify, signPair };
+const jwtService = {
+  signAccessToken,
+  signRefreshToken,
+  verify,
+  signPair,
+  signSubscribeEventToken,
+};
 
 export default jwtService;

@@ -3,6 +3,7 @@ import AppError from '../helpers/AppError.js';
 import emailService from './emailService.js';
 import eventModel from '../models/event.model.js';
 import participantModel from '../models/participant.model.js';
+import jwtService from './jwt.service.js';
 
 const create = async (
   eventId: number,
@@ -23,16 +24,23 @@ const create = async (
   const participant = await participantModel.findById(participantId);
 
   if (event && participant) {
+    const token = jwtService.signSubscribeEventToken({ id: bookingId });
     await emailService.sendMailSubscribeEvent(
       participant.email,
       event.title,
       event.description,
+      token,
     );
   }
 
   return bookingId;
 };
 
-const bookingService = { create };
+const unsubscribe = async (token: string): Promise<number> => {
+  const payload = jwtService.verify(token);
+  return await bookingModel.remove(payload.id);
+};
+
+const bookingService = { create, unsubscribe };
 
 export default bookingService;

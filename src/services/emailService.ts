@@ -82,6 +82,7 @@ const sendMailSubscribeEvent = async (
   participantEmail: string,
   eventTitle: string,
   eventDescription: string,
+  token: string,
 ): Promise<void> => {
   await transporter.sendMail({
     from: `MarsAi <${process.env.MAILER_EMAIL}>`,
@@ -94,10 +95,13 @@ const sendMailSubscribeEvent = async (
       <p>Here are the details of the event:</p>
       <p>${eventDescription}</p>
       <p>We look forward to seeing you there!</p>
+      <p>If you want to unsubscribe, please <a href="${process.env.FRONT_IP}/bookings/unsubscribe/${token}">click here</a>.</p>
       <img src="https://imgs.search.brave.com/6HTmkrs86xIbHszERypQBVSqhAIY9u7Z4AQSoL1C1I0/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTg3/MTMyOTczNS9waG90/by9jYXRzLW5vc2Uu/anBnP3M9NjExNjEy/Jnc9maz0yMCZjPVVHWGgtS21yTm9Z/Tl9va05zM2tlWmFm/M1VHMUZ1akRmMVFN/djlvNDRmbTQ9" alt="Mars Logo" />
     `,
   });
-  console.info(`Subscription confirmation email sent to ${participantEmail} for event ${eventTitle}`);
+  console.info(
+    `Subscription confirmation email sent to ${participantEmail} for event ${eventTitle}`,
+  );
 };
 
 const emailService = { sendMail, mailerJob, sendMailSubscribeEvent };

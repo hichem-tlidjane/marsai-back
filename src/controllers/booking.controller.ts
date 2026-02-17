@@ -20,5 +20,19 @@ const create: RequestHandler = async (req, res, next) => {
   }
 };
 
-const bookingController = { create };
+const unsubscribe: RequestHandler<{ token: string }> = async (
+  req,
+  res,
+  next,
+) => {
+  try {
+    const { token } = req.params;
+    await bookingService.unsubscribe(token);
+    res.status(200).send('You have been unsubscribed');
+  } catch (error) {
+    next(error);
+  }
+};
+
+const bookingController = { create, unsubscribe };
 export default bookingController;

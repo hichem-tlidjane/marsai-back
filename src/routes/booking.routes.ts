@@ -7,4 +7,6 @@ const router = Router();
 
 router.post('/', validate(BookingRequestSchema), bookingController.create);
 
+router.get('/unsubscribe/:token', bookingController.unsubscribe);
+
 export default router;

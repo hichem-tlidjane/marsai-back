@@ -24,6 +24,14 @@ const findByParticipantAndEvent = async (
   return rows[0] ?? null;
 };
 
-const bookingModel = { create, findByParticipantAndEvent };
+const remove = async (id: number): Promise<number> => {
+  const [result] = await db.execute<ResultSetHeader>(
+    'DELETE FROM booking WHERE id = ?',
+    [id],
+  );
+  return result.affectedRows;
+};
+
+const bookingModel = { create, findByParticipantAndEvent, remove };
 
 export default bookingModel;
