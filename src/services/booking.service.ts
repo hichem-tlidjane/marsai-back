@@ -1,5 +1,8 @@
 import bookingModel from '../models/booking.model.js';
 import AppError from '../helpers/AppError.js';
+import emailService from './emailService.js';
+import eventModel from '../models/event.model.js';
+import participantModel from '../models/participant.model.js';
 
 const create = async (
   eventId: number,
@@ -15,6 +18,17 @@ const create = async (
   }
 
   const bookingId = await bookingModel.create(eventId, participantId);
+
+  const event = await eventModel.findById(eventId);
+  const participant = await participantModel.findById(participantId);
+
+  if (event && participant) {
+    await emailService.sendMailSubscribeEvent(
+      participant.email,
+      event.title,
+      event.description,
+    );
+  }
 
   return bookingId;
 };

@@ -21,6 +21,14 @@ const findByEmail = async (email: string): Promise<Participant | null> => {
   return rows[0] ?? null;
 };
 
-const participantModel = { create, findByEmail };
+const findById = async (id: number): Promise<Participant | null> => {
+  const [rows] = await db.query<Participant[]>(
+    'SELECT * FROM participant WHERE id = ?',
+    [id],
+  );
+  return rows[0] ?? null;
+};
+
+const participantModel = { create, findByEmail, findById };
 
 export default participantModel;

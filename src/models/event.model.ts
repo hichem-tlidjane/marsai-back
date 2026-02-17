@@ -61,6 +61,13 @@ const remove = async (id: number): Promise<number> => {
   return result.affectedRows;
 };
 
-const eventModel = { create, findAll, update, remove };
+const findById = async (id: number): Promise<Event | null> => {
+  const [rows] = await db.query<Event[]>('SELECT * FROM event WHERE id = ?', [
+    id,
+  ]);
+  return rows[0] ?? null;
+};
+
+const eventModel = { create, findAll, update, remove, findById };
 
 export default eventModel;

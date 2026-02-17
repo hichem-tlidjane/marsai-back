@@ -78,6 +78,28 @@ const mailerJob = (): void => {
   });
 };
 
-const emailService = { sendMail, mailerJob };
+const sendMailSubscribeEvent = async (
+  participantEmail: string,
+  eventTitle: string,
+  eventDescription: string,
+): Promise<void> => {
+  await transporter.sendMail({
+    from: `MarsAi <${process.env.MAILER_EMAIL}>`,
+    to: participantEmail,
+    subject: `Subscription Confirmation for Event: ${eventTitle}`,
+    html: `
+      <h1>Event Subscription Confirmation</h1>
+      <p>Dear participant,</p>
+      <p>Thank you for subscribing to our event: <strong>${eventTitle}</strong>.</p>
+      <p>Here are the details of the event:</p>
+      <p>${eventDescription}</p>
+      <p>We look forward to seeing you there!</p>
+      <img src="https://imgs.search.brave.com/6HTmkrs86xIbHszERypQBVSqhAIY9u7Z4AQSoL1C1I0/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTg3/MTMyOTczNS9waG90/by9jYXRzLW5vc2Uu/anBnP3M9NjExNjEy/Jnc9maz0yMCZjPVVHWGgtS21yTm9Z/Tl9va05zM2tlWmFm/M1VHMUZ1akRmMVFN/djlvNDRmbTQ9" alt="Mars Logo" />
+    `,
+  });
+  console.info(`Subscription confirmation email sent to ${participantEmail} for event ${eventTitle}`);
+};
+
+const emailService = { sendMail, mailerJob, sendMailSubscribeEvent };
 
 export default emailService;
