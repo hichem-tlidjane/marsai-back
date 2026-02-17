@@ -1,22 +1,23 @@
 import type { NextFunction, Request, RequestHandler, Response } from 'express';
-import jwt from 'jsonwebtoken';
-import type TokenPayload from '../types/interfaces/token-payload.interface.js';
+import jwtService from '../services/jwt.service.js';
 
 export const isLogged: RequestHandler = (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
-  const token = req.headers.authorization?.split(' ')[1];
+  const token = req.cookies.accessToken as string | undefined;
+
   if (!token) {
-    return res.status(403).send({ message: 'Token missing' });
+    return res.status(401).send({ message: 'Token missing' });
   }
+
   try {
-    const payload = jwt.verify(token, process.env.JWT_SECRET) as TokenPayload;
+    const payload = jwtService.verify(token);
     req.user_id = payload.id;
     req.user_roles = payload.roles;
     return next();
   } catch (_) {
-    return res.status(403).send({ message: 'Invalid token' });
+    return res.status(401).send({ message: 'Invalid token' });
   }
 };
