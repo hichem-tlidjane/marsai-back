@@ -1,3 +1,5 @@
+import type { Languages } from "../enums/languages.enum.js";
+
 export default interface Movie {
   id?: number;
   originalTitle: string;
@@ -7,7 +9,7 @@ export default interface Movie {
   coverImage: string;
   duration: number;
   isHybrid: boolean;
-  language: 'FR' | 'EN';
+  language: Languages;
   originalSynopsis: string;
   englishSynopsis: string;
   creativeProcess: string;

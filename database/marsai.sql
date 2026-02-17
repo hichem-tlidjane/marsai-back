@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS `movie` (
     `cover_path` VARCHAR(255) NOT NULL,
     `duration` INT NOT NULL,
     `is_hybrid` BOOLEAN NOT NULL,
-    `language` ENUM('FR','EN') NOT NULL,
+    `language` ENUM('FR','EN','SQ','AM','AR','HY','AZ','BN','BS','BG','MY','ZH','HR','CS','NL','DE','EL','GU','HA','HE','HI','HU','ID','IG','IT','JA','JV','KN','KK','KM','KO','MS','ML','MR','NE','FA','PL','PT','PA','RO','RU','SR','SI','ES','SW','TA','TE','TH','TR','UK','UR','VI','YO') NOT NULL,
     `original_synopsis` TEXT NOT NULL,
     `english_synopsis` TEXT NOT NULL,
     `creative_process` TEXT NOT NULL,

@@ -6,6 +6,7 @@ import {
   MAX_VIDEO_SIZE,
 } from '../../helpers/upload-const.js';
 import { getVideoDurationInSeconds } from 'get-video-duration';
+import { Languages } from '../enums/languages.enum.js';
 
 const parseJson = (value: unknown, ctx: z.RefinementCtx) => {
   if (typeof value === 'string') {
@@ -85,7 +86,7 @@ export const MovieRequestSchema = z
     stillImageC: z.array(ImageFileSchema).nullish(),
     // duration: z.coerce.number().int().positive().max(90),
     isHybrid: z.coerce.boolean().default(false),
-    language: z.enum(['FR', 'EN']),
+    language: z.enum(Languages),
     originalSynopsis: z.string().min(1).max(300),
     englishSynopsis: z.string().min(1).max(300),
     creativeProcess: z.string().min(1).max(300),
