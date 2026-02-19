@@ -18,6 +18,8 @@ eventRouter.post(
 
 eventRouter.get('/', eventController.findAll);
 
+eventRouter.get('/:id', eventController.findById);
+
 eventRouter.put(
   '/:id',
   validate(UpdateEventRequestSchema),

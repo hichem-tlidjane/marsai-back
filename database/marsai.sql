@@ -62,7 +62,8 @@ CREATE TABLE IF NOT EXISTS `event` (
     `published_at` DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
     `date` DATETIME NOT NULL,
     `duration` INT,
-    `location` VARCHAR(255)
+    `location` VARCHAR(255),
+    `is_bookable` BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE IF NOT EXISTS `tag` (

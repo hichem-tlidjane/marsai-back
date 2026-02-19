@@ -19,6 +19,16 @@ const findAll: RequestHandler = async (_, res, next) => {
   }
 };
 
+const findById: RequestHandler = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const event = await eventService.findById(parseInt(id as string));
+    return res.json(event);
+  } catch (err) {
+    next(err);
+  }
+};
+
 const remove: RequestHandler = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -39,6 +49,6 @@ const update: RequestHandler = async (req, res, next) => {
   }
 };
 
-const eventController = { create, findAll, remove, update };
+const eventController = { create, findAll, remove, update, findById };
 
 export default eventController;
