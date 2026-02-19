@@ -1,6 +1,6 @@
 import bookingModel from '../models/booking.model.js';
 import AppError from '../helpers/AppError.js';
-import emailService from './emailService.js';
+import emailService from './email.service.js';
 import eventModel from '../models/event.model.js';
 import participantModel from '../models/participant.model.js';
 import jwtService from './jwt.service.js';

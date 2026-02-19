@@ -1,6 +1,6 @@
 import newsletterModel from '../models/newsletter.model.js';
 import type { NewsletterRequest } from '../types/schemas/newsletter.schema.js';
-import emailService from './emailService.js';
+import emailService from './email.service.js';
 import subscriberModel from '../models/subscriber.model.js';
 
 const create = async (newsletter: NewsletterRequest): Promise<number> => {

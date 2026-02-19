@@ -5,7 +5,7 @@ import { errorHandler } from './middlewares/error-handler.js';
 import cors from 'cors';
 import eventRouter from './routes/event.route.js';
 import newsletterRouter from './routes/newsletter.routes.js';
-import emailService from './services/emailService.js';
+import emailService from './services/email.service.js';
 import subscriberRouter from './routes/subscriber.route.js';
 import cookieParser from 'cookie-parser';
 import bookingRouter from './routes/booking.routes.js';
