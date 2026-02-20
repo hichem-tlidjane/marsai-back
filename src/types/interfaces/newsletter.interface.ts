@@ -4,4 +4,5 @@ export default interface Newsletter {
   content: string;
   sendAt: Date | null;
   sent: boolean;
+  createdAt?: string;
 }

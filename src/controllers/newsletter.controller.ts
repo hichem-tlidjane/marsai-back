@@ -10,6 +10,15 @@ const create: RequestHandler = async (req, res, next) => {
   }
 };
 
-const newsletterController = { create };
+const findAll: RequestHandler = async (_req, res, next) => {
+  try {
+    const newsletters = await newsletterService.findAll();
+    res.send(newsletters);
+  } catch (e) {
+    next(e);
+  }
+};
+
+const newsletterController = { create, findAll };
 
 export default newsletterController;

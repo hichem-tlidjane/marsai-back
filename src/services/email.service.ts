@@ -59,21 +59,27 @@ const sendMail = async (
 
   const result = await Promise.allSettled(sendPromises);
   console.info('Email sent: ' + result.length);
-
   await newsletterModel.setIsSent(newsletter.id);
 };
 
+let isRunning = false;
 const mailerJob = (): void => {
-  cron.schedule('*/10 * * * *', async () => {
+  cron.schedule('*/1 * * * *', async () => {
+    if (isRunning) return;
     console.info('Running mailer job on ' + new Date().toUTCString());
-    const newsletters = await newsletterModel.findAllToSend();
-    if (newsletters.length > 0) {
-      const subscribers = await subscriberModel.findAll();
-      if (subscribers.length > 0) {
+    isRunning = true;
+    try {
+      const newsletters = await newsletterModel.findAllToSend();
+      if (newsletters.length > 0) {
+        const subscribers = await subscriberModel.findAll();
         for (const newsletter of newsletters) {
           await sendMail(newsletter, subscribers);
         }
       }
+    } catch (e) {
+      console.error('Error in mailer job:', e);
+    } finally {
+      isRunning = false;
     }
   });
 };

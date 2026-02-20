@@ -6,7 +6,7 @@ const signAccessToken = (payload: TokenPayload): string => {
     { id: payload.id, roles: payload.roles },
     process.env.JWT_SECRET,
     {
-      expiresIn: '1m',
+      expiresIn: '4h',
     },
   );
 };

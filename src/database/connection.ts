@@ -7,6 +7,7 @@ const db = await mysql.createConnection({
   user: process.env.MYSQL_USER,
   password: process.env.MYSQL_PASSWORD,
   namedPlaceholders: true,
+  timezone: 'Z',
 });
 
 export default db;
