@@ -7,8 +7,8 @@ import { toSnakeCase } from '../helpers/string-utils.js';
 
 const create = async (event: CreateEventRequest): Promise<void> => {
   await db.execute(
-    `INSERT INTO event (title, description, status, date, published_at, duration, location)
-    VALUES (?, ?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO event (title, description, status, date, published_at, duration, location, is_bookable, capacity, lang)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       event.title,
       event.description,
@@ -17,13 +17,16 @@ const create = async (event: CreateEventRequest): Promise<void> => {
       event.publishedAt,
       event.duration,
       event.location,
+      event.isBookable,
+      event.capacity,
+      event.lang,
     ],
   );
   return;
 };
 
-const findAll = async (): Promise<Event[]> => {
-  const [rows] = await db.query('SELECT * FROM event');
+const findAll = async (lang = 'FR'): Promise<Event[]> => {
+  const [rows] = await db.query('SELECT * FROM event WHERE lang = ?', [lang]);
   return rows as Event[];
 };
 
@@ -32,11 +35,11 @@ const update = async (
   event: UpdateEventRequest,
 ): Promise<number> => {
   const fields: string[] = [];
-  const values: (string | number | Date)[] = [];
+  const values: (string | number | Date | boolean)[] = [];
 
   for (const [key, value] of Object.entries(event)) {
     fields.push(`${toSnakeCase(key)} = ?`);
-    values.push(value as string | number | Date);
+    values.push(value as string | number | Date | boolean);
   }
 
   if (fields.length === 0) {

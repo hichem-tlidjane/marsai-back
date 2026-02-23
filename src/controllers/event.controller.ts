@@ -10,9 +10,10 @@ const create: RequestHandler = async (req, res, next) => {
   }
 };
 
-const findAll: RequestHandler = async (_, res, next) => {
+const findAll: RequestHandler = async (req, res, next) => {
   try {
-    const events = await eventService.findAll();
+    const { lang } = req.query;
+    const events = await eventService.findAll(lang as string);
     return res.json(events);
   } catch (err) {
     next(err);

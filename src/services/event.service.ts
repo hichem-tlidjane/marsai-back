@@ -8,8 +8,8 @@ const create = async (body: CreateEventRequest): Promise<void> => {
   await eventModel.create(body);
 };
 
-const findAll = async (): Promise<Event[]> => {
-  return await eventModel.findAll();
+const findAll = async (lang?: string): Promise<Event[]> => {
+  return await eventModel.findAll(lang);
 };
 
 const findById = async (id: number): Promise<Event> => {

@@ -8,6 +8,9 @@ export const UpdateEventRequestSchema = z
     publishedAt: z.coerce.date(),
     duration: z.int().positive(),
     location: z.string().max(255),
+    isBookable: z.boolean(),
+    capacity: z.number().int().positive(),
+    lang: z.enum(['FR', 'EN']),
   })
   .partial();
 

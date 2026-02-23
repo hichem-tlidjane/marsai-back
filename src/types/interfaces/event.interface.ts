@@ -9,4 +9,7 @@ export interface Event extends RowDataPacket {
   published_at: Date;
   duration: number;
   location: string;
+  is_bookable: boolean;
+  capacity: number;
+  lang: string;
 }
