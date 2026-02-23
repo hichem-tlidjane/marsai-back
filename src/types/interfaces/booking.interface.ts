@@ -1,4 +1,7 @@
 import type { RowDataPacket } from 'mysql2';
+export interface CountRow extends RowDataPacket {
+  count: number;
+}
 export default interface Booking extends RowDataPacket {
   id: number;
   participant_id: number;

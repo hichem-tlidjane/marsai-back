@@ -62,6 +62,13 @@ const getRemainingSeats: RequestHandler = async (req, res, next) => {
   }
 };
 
-const eventController = { create, findAll, remove, update, findById, getRemainingSeats };
+const eventController = {
+  create,
+  findAll,
+  remove,
+  update,
+  findById,
+  getRemainingSeats,
+};
 
 export default eventController;

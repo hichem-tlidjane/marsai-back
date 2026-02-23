@@ -1,6 +1,7 @@
 import db from '../database/connection.js';
 import type { ResultSetHeader } from 'mysql2';
 import type Booking from '../types/interfaces/booking.interface.js';
+import type { CountRow } from '../types/interfaces/booking.interface.js';
 
 const create = async (
   eventId: number,
@@ -32,6 +33,19 @@ const remove = async (id: number): Promise<number> => {
   return result.affectedRows;
 };
 
-const bookingModel = { create, findByParticipantAndEvent, remove };
+const countByEventId = async (eventId: number): Promise<number> => {
+  const [rows] = await db.query<CountRow[]>(
+    'SELECT COUNT(*) as count FROM booking WHERE event_id = ?',
+    [eventId],
+  );
+  return rows[0]!.count;
+};
+
+const bookingModel = {
+  create,
+  findByParticipantAndEvent,
+  remove,
+  countByEventId,
+};
 
 export default bookingModel;
