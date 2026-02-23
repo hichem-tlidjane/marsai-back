@@ -50,6 +50,18 @@ const update: RequestHandler = async (req, res, next) => {
   }
 };
 
-const eventController = { create, findAll, remove, update, findById };
+const getRemainingSeats: RequestHandler = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const remainingSeats = await eventService.getRemainingSeats(
+      parseInt(id as string),
+    );
+    return res.json({ remainingSeats });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const eventController = { create, findAll, remove, update, findById, getRemainingSeats };
 
 export default eventController;

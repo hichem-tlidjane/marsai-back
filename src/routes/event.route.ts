@@ -30,4 +30,6 @@ eventRouter.put(
 
 eventRouter.delete('/:id', isLogged, isAdmin, eventController.remove);
 
+eventRouter.get('/:id/remaining-seats', eventController.getRemainingSeats);
+
 export default eventRouter;
