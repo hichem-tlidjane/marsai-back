@@ -6,6 +6,7 @@ import db from '../database/connection.js';
 import collaboratorModel from '../models/collaborator.model.js';
 import imageModel from '../models/image.model.js';
 import AppError from '../helpers/AppError.js';
+import type { MovieFindAllResponse } from '../types/interfaces/MovieFindAllResponse.interface.js';
 
 const create = async (movieRequest: MovieRequest): Promise<MovieResponse> => {
   try {
@@ -26,9 +27,14 @@ const create = async (movieRequest: MovieRequest): Promise<MovieResponse> => {
   }
 };
 
-const getAll = async (page: number): Promise<Movie[]> => {
-  return await movieModel.getAll(page);
+const getAll = async (
+  page: number,
+  type: string,
+  search: string,
+): Promise<MovieFindAllResponse> => {
+  return await movieModel.getAll(page, type, search);
 };
+
 const getById = async (id: number): Promise<Movie> => {
   const movie = await movieModel.getById(id);
   if (!movie) throw new AppError(404, 'film not found');
