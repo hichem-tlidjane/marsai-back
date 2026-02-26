@@ -5,6 +5,9 @@ import newsletterModel from '../models/newsletter.model.js';
 import cron from 'node-cron';
 import subscriberModel from '../models/subscriber.model.js';
 import type SMTPTransport from 'nodemailer/lib/smtp-transport/index.js';
+import path from 'path';
+import fs from 'fs/promises';
+import { fileURLToPath } from 'url';
 
 let transporter: nodemailer.Transporter<
   SMTPTransport.SentMessageInfo,
@@ -28,36 +31,49 @@ if (process.env.NODE_ENV === 'development') {
   }
 } else {
   transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
+    host: process.env.MAILER_HOST,
+    port: Number(process.env.MAILEROO_PORT) || 587,
+    secure: process.env.MAILEROO_PORT === '465',
     auth: {
-      type: 'OAuth2',
       user: process.env.MAILER_EMAIL,
-      clientId: process.env.MAILER_CLIENT_ID,
-      clientSecret: process.env.MAILER_CLIENT_SECRET,
-      accessToken: process.env.MAILER_ACCESS_TOKEN,
-      refreshToken: process.env.MAILER_REFRESH_TOKEN,
+      pass: process.env.MAILER_PASS,
     },
+    debug: false,
+    logger: true,
   });
 
-  await transporter.verify();
+  try {
+    await transporter.verify();
+    console.info('Maileroo SMTP connected successfully');
+  } catch (e) {
+    console.error('Maileroo connection failed:', e);
+  }
 }
+
+const loadHtmlFile = async (name: string): Promise<string> => {
+  const filename = fileURLToPath(import.meta.url);
+  const dirname = path.dirname(filename);
+  const templatePath = path.join(dirname, '../templates/' + name + '.html');
+  return await fs.readFile(templatePath, 'utf-8');
+};
 
 const sendMail = async (
   newsletter: Newsletter,
   subscribers: Subscriber[],
 ): Promise<void> => {
-  const sendPromises = subscribers.map((subs) => {
+  const htmlTemplate = await loadHtmlFile('newsletter');
+  const sendPromises = subscribers.map((sub) => {
+    const personalizedHtml = htmlTemplate
+      .replace('{{CONTENT}}', newsletter.content)
+      .replace(
+        '{{UNSUBSCRIBE_URL}}',
+        `${process.env.FRONT_IP}/unsubscribe/${sub.unsub_token}`,
+      );
     return transporter.sendMail({
       from: `MarsAi <${process.env.MAILER_EMAIL}>`,
-      to: subs.email,
+      to: sub.email,
       subject: newsletter.object,
-      html: `
-        <h1>miaou miaou<h1/>
-        <p>${newsletter.content}<p/>
-        <img src="https://imgs.search.brave.com/6HTmkrs86xIbHszERypQBVSqhAIY9u7Z4AQSoL1C1I0/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTg3/MTMyOTczNS9waG90/by9jYXRzLW5vc2Uu/anBnP3M9NjEyeDYx/MiZ3PTAmaz0yMCZj/PVVHWGgtS21yTm9Z/Tl9va05zM2tlWmFm/M1VHMUZ1akRmMVFN/djlvNDRmbTQ9" alt="Mars Logo" />
-    `,
+      html: personalizedHtml,
     });
   });
 

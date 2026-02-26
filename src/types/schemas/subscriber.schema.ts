@@ -5,3 +5,9 @@ export const SubscriberRequestSchema = z.object({
 });
 
 export type SubscriberRequest = z.infer<typeof SubscriberRequestSchema>;
+
+export const UnsubscribeRequestSchema = z.object({
+  token: z.string(),
+});
+
+export type UnubscribeRequest = z.infer<typeof UnsubscribeRequestSchema>;

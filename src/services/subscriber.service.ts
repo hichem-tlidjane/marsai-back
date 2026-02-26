@@ -1,7 +1,10 @@
 import AppError from '../helpers/AppError.js';
 import { isMysqlError } from '../helpers/is-mysql-error.js';
 import subscriberModel from '../models/subscriber.model.js';
-import type { SubscriberRequest } from '../types/schemas/subscriber.schema.js';
+import type {
+  SubscriberRequest,
+  UnubscribeRequest,
+} from '../types/schemas/subscriber.schema.js';
 
 const subscribe = async (sub: SubscriberRequest): Promise<number> => {
   try {
@@ -14,7 +17,7 @@ const subscribe = async (sub: SubscriberRequest): Promise<number> => {
   }
 };
 
-const unsubscribe = async (sub: SubscriberRequest): Promise<number> => {
+const unsubscribe = async (sub: UnubscribeRequest): Promise<number> => {
   return await subscriberModel.remove(sub);
 };
 

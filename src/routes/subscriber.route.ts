@@ -1,7 +1,10 @@
 import express from 'express';
 import { validate } from '../middlewares/validate.js';
 import subscriberController from '../controllers/subscriber.controller.js';
-import { SubscriberRequestSchema } from '../types/schemas/subscriber.schema.js';
+import {
+  SubscriberRequestSchema,
+  UnsubscribeRequestSchema,
+} from '../types/schemas/subscriber.schema.js';
 
 const subscriberRouter = express.Router();
 
@@ -13,7 +16,7 @@ subscriberRouter.post(
 
 subscriberRouter.delete(
   '/',
-  validate(SubscriberRequestSchema),
+  validate(UnsubscribeRequestSchema),
   subscriberController.unsubscribe,
 );
 
