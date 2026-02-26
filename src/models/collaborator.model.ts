@@ -31,6 +31,7 @@ const createDirector = async (
         youtube_url,
         linkedin_url,
         twitter_url,
+        is_director,
         movie_id
     ) 
     VALUES 
@@ -53,11 +54,15 @@ const createDirector = async (
         :youtubeUrl,
         :linkedinUrl,
         :twitterUrl,
+        :isDirector,
         :movieId
     )
   `;
 
-  const [result] = await db.execute<ResultSetHeader>(sql, values);
+  const [result] = await db.execute<ResultSetHeader>(sql, {
+    ...values,
+    isDirector: true,
+  });
 
   return result.insertId;
 };

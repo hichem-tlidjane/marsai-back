@@ -49,6 +49,7 @@ CREATE TABLE IF NOT EXISTS `collaborator` (
     `linkedin_url` VARCHAR(255),
     `twitter_url` VARCHAR(255),
     `movie_id` INT NOT NULL,
+    `is_director` BOOLEAN NOT NULL DEFAULT FALSE,
     FOREIGN KEY (`movie_id`) REFERENCES `movie`(`id`) ON DELETE CASCADE
 );
 

@@ -44,7 +44,7 @@ const getAll = async (
                       )  AS director\
               FROM movie m \
               INNER JOIN collaborator c ON m.id = c.movie_id \
-              WHERE c.contribution = "Director"\
+              WHERE c.is_director = true\
               AND m.english_title LIKE ? \
               AND( m.is_hybrid = ? OR m.is_hybrid = ? )\
               LIMIT 20 OFFSET ?';
@@ -99,14 +99,17 @@ const getById = async (id: number): Promise<Movie | null> => {
             "email", c.email\
     )) AS collaborators \
     FROM movie m \
-    INNER JOIN collaborator c ON m.id = c.movie_id AND c.contribution <> "Director"\
-    INNER JOIN collaborator dir ON m.id = dir.movie_id AND dir.contribution = "Director"   \
+    LEFT JOIN collaborator c ON m.id = c.movie_id AND c.is_director = false\
+    INNER JOIN collaborator dir ON m.id = dir.movie_id AND dir.is_director = true\
     WHERE m.id = ? \
     GROUP BY dir.id';
 
   const [result] = await db.query<Movie[]>(sql, [id]);
-
-  return (result[0] as Movie) ?? null;
+  const movie = (result[0] as Movie) ?? null;
+  if (movie && movie.collaborators[0]?.email === null) {
+    movie.collaborators = [];
+  }
+  return movie;
 };
 
 const remove = async (id: number): Promise<number> => {

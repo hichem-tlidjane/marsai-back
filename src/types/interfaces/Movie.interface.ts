@@ -1,5 +1,6 @@
 import type { RowDataPacket } from 'mysql2';
 import type { Languages } from '../enums/languages.enum.js';
+import type { Collaborator } from '../schemas/MovieRequest.schema.js';
 
 export default interface Movie extends RowDataPacket {
   id?: number;
@@ -18,4 +19,5 @@ export default interface Movie extends RowDataPacket {
   has_subs: boolean;
   srt: string | null;
   status: 'draft' | 'published' | 'archived';
+  collaborators: Collaborator[];
 }
