@@ -5,6 +5,7 @@ export default interface Movie extends RowDataPacket {
   id?: number;
   original_title: string;
   english_title: string;
+  slug: string;
   submitted_at?: Date;
   youtube_url: string;
   cover_image: string;

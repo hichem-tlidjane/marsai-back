@@ -9,14 +9,15 @@ import { upload } from '../middlewares/upload.js';
 const movieRouter = express.Router();
 
 movieRouter.get('/', movieController.getAll);
-movieRouter.get('/:id', movieController.getById);
 movieRouter.post(
   '/',
   upload,
   validate(MovieRequestSchema),
   movieController.create,
 );
+movieRouter.get('/:id', movieController.getById);
 movieRouter.delete('/:id', movieController.remove);
 movieRouter.put('/:id', isLogged, isAdmin, movieController.update);
+movieRouter.get('/:slug', movieController.getBySlug);
 
 export default movieRouter;

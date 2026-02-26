@@ -80,6 +80,7 @@ export const MovieRequestSchema = z
   .object({
     originalTitle: z.string().min(1).max(255),
     englishTitle: z.string().min(1).max(255),
+    slug: z.string().optional(),
     videoUrl: VideoUrlField,
     coverUrl: ImageUrlField,
     stillsUrls: z.array(ImageUrlField).default([]),

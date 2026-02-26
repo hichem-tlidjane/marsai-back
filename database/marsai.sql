@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS `movie` (
     `id` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     `original_title` VARCHAR(255) NOT NULL,
     `english_title` VARCHAR(255) NOT NULL,
+    `slug` VARCHAR(255) UNIQUE NOT NULL,
     `submitted_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `youtube_url` VARCHAR(255) UNIQUE,
     `video_path` VARCHAR(255),
