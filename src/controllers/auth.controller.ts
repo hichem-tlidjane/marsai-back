@@ -4,6 +4,7 @@ import jwtService from '../services/jwt.service.js';
 import jwt from 'jsonwebtoken';
 import { setTokensInCookies } from '../helpers/cookies.js';
 import AppError from '../helpers/AppError.js';
+import userModel from '../models/user.model.js';
 
 const login: RequestHandler = async (req, res, next) => {
   try {
@@ -38,6 +39,16 @@ const refreshToken: RequestHandler = (req: Request, res, next) => {
   }
 };
 
-const authController = { login, refreshToken };
+const getMe: RequestHandler = async (req: Request, res, next) => {
+  try {
+    const me = await userModel.findById(req.user_id);
+    if (!me) throw new AppError(404, 'User not found');
+    return res.send(me);
+  } catch (e) {
+    next(e);
+  }
+};
+
+const authController = { login, refreshToken, getMe };
 
 export default authController;
