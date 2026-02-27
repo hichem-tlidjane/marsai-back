@@ -56,6 +56,7 @@ CREATE TABLE IF NOT EXISTS `collaborator` (
 CREATE TABLE IF NOT EXISTS `event` (
     `id` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     `title` VARCHAR(100) NOT NULL,
+    `slug` VARCHAR(100) NOT NULL UNIQUE,
     `description` TEXT,
     `status` ENUM('draft', 'published', 'canceled'),
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,

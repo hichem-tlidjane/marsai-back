@@ -1,7 +1,7 @@
 import type MovieResponse from '../types/interfaces/MovieResponse.interface.js';
 import movieModel from '../models/movie.model.js';
 import type { MovieRequest } from '../types/schemas/MovieRequest.schema.js';
-import { slugify } from '../helpers/string-utils.js';
+import { generateUniqueSlug } from '../helpers/string-utils.js';
 import type Movie from '../types/interfaces/Movie.interface.js';
 import db from '../database/connection.js';
 import collaboratorModel from '../models/collaborator.model.js';
@@ -12,7 +12,13 @@ import type { MovieFindAllResponse } from '../types/interfaces/MovieFindAllRespo
 const create = async (movieRequest: MovieRequest): Promise<MovieResponse> => {
   try {
     await db.beginTransaction();
-    const slug = slugify(movieRequest.originalTitle);
+    const slug = await generateUniqueSlug(
+      movieRequest.originalTitle,
+      async (slug) => {
+        const exists = await movieModel.getBySlug(slug);
+        return !!exists;
+      },
+    );
     const movieId = await movieModel.create({ ...movieRequest, slug });
     await collaboratorModel.createDirector(movieRequest.director, movieId);
     await collaboratorModel.create(movieRequest.collaborators, movieId);
@@ -28,7 +34,6 @@ const create = async (movieRequest: MovieRequest): Promise<MovieResponse> => {
     throw err;
   }
 };
-
 const getAll = async (
   page: number,
   type: string,
@@ -73,7 +78,13 @@ const update = async (
   movieRequest: MovieRequest,
 ): Promise<number> => {
   if (movieRequest.originalTitle) {
-    const slug = slugify(movieRequest.originalTitle);
+    const slug = await generateUniqueSlug(
+      movieRequest.originalTitle,
+      async (slug) => {
+        const existing = await movieModel.getBySlug(slug);
+        return !!existing && existing.id !== id;
+      },
+    );
     movieRequest.slug = slug;
   }
   const affectedRows = await movieModel.update(id, movieRequest);

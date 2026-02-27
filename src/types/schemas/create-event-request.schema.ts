@@ -2,6 +2,7 @@ import z from 'zod';
 
 export const CreateEventRequestSchema = z.object({
   title: z.string().nonempty(),
+  slug: z.string().optional(),
   description: z.string().optional().default(''),
   date: z.coerce.date(),
   publishedAt: z.coerce.date(),

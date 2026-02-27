@@ -20,6 +20,8 @@ eventRouter.get('/', eventController.findAll);
 
 eventRouter.get('/:id', eventController.findById);
 
+eventRouter.get('/:slug', eventController.findBySlug);
+
 eventRouter.put(
   '/:id',
   validate(UpdateEventRequestSchema),

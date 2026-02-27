@@ -7,12 +7,13 @@ import { toSnakeCase } from '../helpers/string-utils.js';
 
 const create = async (event: CreateEventRequest): Promise<void> => {
   await db.execute(
-    `INSERT INTO event (title, description, status, date, published_at, duration, location, is_bookable, capacity, lang)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO event (title, slug, description, status, date, published_at, duration, location, is_bookable, capacity, lang)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       event.title,
+      event.slug,
       event.description,
-      'upcoming',
+      'draft',
       event.date,
       event.publishedAt,
       event.duration,
@@ -71,6 +72,13 @@ const findById = async (id: number): Promise<Event | null> => {
   return rows[0] ?? null;
 };
 
+const findBySlug = async (slug: string): Promise<Event | null> => {
+  const [rows] = await db.query<Event[]>('SELECT * FROM event WHERE slug = ?', [
+    slug,
+  ]);
+  return rows[0] ?? null;
+};
+
 const findRelatedIds = async (id: number): Promise<number[]> => {
   const event = await findById(id);
   if (!event) return [];
@@ -87,6 +95,7 @@ const eventModel = {
   update,
   remove,
   findById,
+  findBySlug,
   findRelatedIds,
 };
 

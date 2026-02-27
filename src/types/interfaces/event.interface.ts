@@ -3,6 +3,7 @@ import type { RowDataPacket } from 'mysql2';
 export interface Event extends RowDataPacket {
   id: number;
   title: string;
+  slug: string;
   description: string;
   status: string;
   date: Date;
