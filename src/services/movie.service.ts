@@ -125,12 +125,10 @@ const getAllSorted = async (
   sort: string,
   order: string,
   onlyDrafts: boolean,
-  search: string
+  search: string,
 ): Promise<MovieFindAllResponse> => {
   return await movieModel.getAllSorted(page, sort, order, onlyDrafts, search);
 };
-
-
 
 const movieService = {
   create,
@@ -140,7 +138,7 @@ const movieService = {
   getBySlug,
   remove,
   update,
-  getAllSorted
+  getAllSorted,
 };
 
 export default movieService;

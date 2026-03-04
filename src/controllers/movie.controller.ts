@@ -100,40 +100,37 @@ const getAllSorted: RequestHandler = async (req, res, next) => {
   try {
     const { page, sort, order, onlyDrafts, search } = req.query;
     const pageAsInt = parseInt(page as string);
-    console.info("in contro");
-    console.info("page: " + page);
-    console.info("sort: " + sort);
-    console.info("order: " + order);
-    console.info("onlyDrafts: " + onlyDrafts);
-    console.info("search: " + search);
+    console.info('in contro');
+    console.info('page: ' + page);
+    console.info('sort: ' + sort);
+    console.info('order: ' + order);
+    console.info('onlyDrafts: ' + onlyDrafts);
+    console.info('search: ' + search);
     if (
       isNaN(pageAsInt) ||
       pageAsInt <= 0 ||
-      ((order as string) !== 'ASC' &&
-        (order as string) !== 'DESC') ||
-        ((sort as string) !== 'id' &&
+      ((order as string) !== 'ASC' && (order as string) !== 'DESC') ||
+      ((sort as string) !== 'id' &&
         (sort as string) !== 'english_title' &&
         (sort as string) !== 'submitted_at' &&
         (sort as string) !== 'status') ||
-        ((onlyDrafts as string) !== "true" &&
-          (onlyDrafts as string) !== "false")
+      ((onlyDrafts as string) !== 'true' && (onlyDrafts as string) !== 'false')
     ) {
       throw new AppError(400, 'Wrong query params');
     }
-    const onlyDraftsAsBool: boolean = onlyDrafts === "true" ? true : false;
+    const onlyDraftsAsBool: boolean = onlyDrafts === 'true' ? true : false;
     const response = await movieService.getAllSorted(
       pageAsInt,
       sort as string,
       order as string,
       onlyDraftsAsBool,
-      search as string
+      search as string,
     );
     return res.send(response);
   } catch (e) {
     next(e);
   }
 };
-
 
 const movieController = {
   getAll,
@@ -143,7 +140,7 @@ const movieController = {
   remove,
   update,
   ratingsPost,
-  getAllSorted
+  getAllSorted,
 };
 
 export default movieController;

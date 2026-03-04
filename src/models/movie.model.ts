@@ -190,24 +190,22 @@ const getAllSorted = async (
   sort: string,
   order: string,
   onlyDrafts: boolean,
-  search: string
+  search: string,
 ): Promise<MovieFindAllResponse> => {
   const offset: number = (page - 1) * 20;
-  console.info("sort: " + sort);
+  console.info('sort: ' + sort);
 
-  const sqlCount =
-    `SELECT COUNT(m.id) AS total \
+  const sqlCount = `SELECT COUNT(m.id) AS total \
                     FROM movie m \
                     INNER JOIN collaborator c ON m.id = c.movie_id \
                 WHERE c.is_director = true\
-              ${ onlyDrafts ? "AND m.status = 'draft'" : "" } \
+              ${onlyDrafts ? "AND m.status = 'draft'" : ''} \
               AND ( m.english_title LIKE :search \
                     OR m.original_title LIKE :search \
                     OR c.firstname LIKE :search \
                     OR c.lastname LIKE :search )`;
 
-  const sqlData =
-    `SELECT m.*, \
+  const sqlData = `SELECT m.*, \
                     JSON_OBJECT( \
                         "gender", c.gender,\
                         "firstname", c.firstname,\
@@ -216,17 +214,20 @@ const getAllSorted = async (
               FROM movie m \
               INNER JOIN collaborator c ON m.id = c.movie_id \
               WHERE c.is_director = true\
-              ${ onlyDrafts ? "AND m.status = 'draft'" : "" } \
+              ${onlyDrafts ? "AND m.status = 'draft'" : ''} \
               AND ( m.english_title LIKE :search \
                     OR m.original_title LIKE :search \
                     OR c.firstname LIKE :search \
                     OR c.lastname LIKE :search ) \
-                    ORDER BY ${ sort } ${ order} \
+                    ORDER BY ${sort} ${order} \
                     LIMIT 20 OFFSET :offset`;
-                    
+
   search = '%' + search + '%';
-  const [data] = await db.query<Movie[]>(sqlData, { search: search, offset: offset});
-  const count = await db.execute<MovieCount[]>(sqlCount, { search: search});
+  const [data] = await db.query<Movie[]>(sqlData, {
+    search: search,
+    offset: offset,
+  });
+  const count = await db.execute<MovieCount[]>(sqlCount, { search: search });
   const resCount: number = count[0][0]!.total;
 
   return { total: resCount, data } as MovieFindAllResponse;
@@ -242,7 +243,7 @@ const movieModel = {
   updateRateByMovieIdAndJuryId,
   createRate,
   update,
-  getAllSorted
+  getAllSorted,
 };
 
 export default movieModel;
