@@ -9,6 +9,7 @@ import { upload } from '../middlewares/upload.js';
 const movieRouter = express.Router();
 
 movieRouter.get('/', movieController.getAll);
+movieRouter.get('/sort', movieController.getAllSorted);
 movieRouter.post(
   '/',
   upload,

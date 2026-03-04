@@ -120,6 +120,18 @@ const ratingPost = async (
   }
 };
 
+const getAllSorted = async (
+  page: number,
+  sort: string,
+  order: string,
+  onlyDrafts: boolean,
+  search: string
+): Promise<MovieFindAllResponse> => {
+  return await movieModel.getAllSorted(page, sort, order, onlyDrafts, search);
+};
+
+
+
 const movieService = {
   create,
   ratingPost,
@@ -128,6 +140,7 @@ const movieService = {
   getBySlug,
   remove,
   update,
+  getAllSorted
 };
 
 export default movieService;
