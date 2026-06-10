@@ -2,10 +2,7 @@ import type { Request, RequestHandler } from 'express';
 import authService from '../services/auth.service.js';
 import jwtService from '../services/jwt.service.js';
 import jwt from 'jsonwebtoken';
-import {
-  setTokensInCookies,
-  unsetTokensInCookies,
-} from '../helpers/cookies.js';
+import { setTokensInCookies, unsetTokensInCookies } from '../helpers/cookies.js';
 import AppError from '../helpers/AppError.js';
 import userModel from '../models/user.model.js';
 
@@ -23,10 +20,10 @@ const login: RequestHandler = async (req, res, next) => {
   }
 };
 
-const logout: RequestHandler = async (_req, res, next) => {
+const logout: RequestHandler = async (req, res, next) => {
   try {
     unsetTokensInCookies(res);
-    return res.send({ message: 'Successfully logged out' });
+    return res.send({ message: "Successfully logged out"});
   } catch (e) {
     next(e);
   }
