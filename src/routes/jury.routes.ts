@@ -7,7 +7,7 @@ import { CreateJurySchema } from '../types/schemas/create-jury.schema.js';
 
 const juryRouter = Router();
 
-juryRouter.get('/', juryController.findAll);
+juryRouter.get('/', isLogged, isAdmin, juryController.findAll);
 juryRouter.post(
   '/',
   isLogged,
