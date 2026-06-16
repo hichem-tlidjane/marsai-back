@@ -65,15 +65,6 @@ const getById: RequestHandler = async (req, res, next) => {
   }
 };
 
-const getBySlug: RequestHandler = async (req, res, next) => {
-  try {
-    const { slug } = req.params;
-    const response = await movieService.getBySlug(slug as string);
-    return res.send(response);
-  } catch (e) {
-    next(e);
-  }
-};
 
 const update: RequestHandler = async (req, res, next) => {
   try {
@@ -147,7 +138,7 @@ const getRandom: RequestHandler = async (req, res, next) => {
     const { qt } = req.query;
     const qtAsInt = parseInt(qt as string);
     const response = await movieService.getRandom(qtAsInt);
-     return res.send(response);
+    return res.send(response);
   } catch (e) {
     next(e);
   }
@@ -156,13 +147,12 @@ const getRandom: RequestHandler = async (req, res, next) => {
 const movieController = {
   getAll,
   getById,
-  getBySlug,
   create,
   remove,
   update,
   getAllSorted,
   adminUpdate,
-  getRandom
+  getRandom,
 };
 
 export default movieController;
