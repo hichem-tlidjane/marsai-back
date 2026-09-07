@@ -33,7 +33,7 @@ movieRouter.post(
 
 movieRouter.get('/:id/ratings', ratingController.getRatings);
 
-movieRouter.delete('/:id', movieController.remove);
+movieRouter.delete('/:id', isLogged, isAdmin, movieController.remove);
 movieRouter.put('/:id', isLogged, isAdmin, movieController.adminUpdate);
 movieRouter.get('/:slug', movieController.getBySlug);
 movieRouter.post(
